@@ -1,19 +1,20 @@
 import { Strat } from '@prisma/client'
 import { Modal, Table, Button } from 'react-bootstrap'
 import { Strategy } from './strategy'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { GetAllStrats } from '../models/strat'
 import { orderBy } from 'lodash'
 import { LoggedInUser } from '../lib/useUser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faBan } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faBan, faGlobeEurope } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 
 interface StrategyListProps
 {
     initialStrats: GetAllStrats,
-    user: LoggedInUser
+    user: LoggedInUser,
+    searchText: string
 }
 
 interface SortField {
@@ -31,7 +32,7 @@ interface DeleteDialogState {
     strat: Strat;
 }
 
-export function StrategyList({ initialStrats, user }: StrategyListProps) {
+export function StrategyList({ initialStrats, user, searchText }: StrategyListProps) {
     const router = useRouter();
     const [strats, setStrats] = useState(initialStrats);
     const [stratState, setStratState] = useState({});
@@ -56,7 +57,7 @@ export function StrategyList({ initialStrats, user }: StrategyListProps) {
                 if(result.status !== "ok") {
                     console.log(result);
                 }
-                
+
                 if(single) {
                     router.push("/");
                 } else {
@@ -97,6 +98,15 @@ export function StrategyList({ initialStrats, user }: StrategyListProps) {
             })
         }
     }
+    
+    /* TODO: This should really be fixed in the database, but it's here for now */
+    const fixRoomLink = (link: string) => {
+        if(link.includes("deanyd")) {
+            return "https://wiki.supermetroid.run/" + link.substring(link.indexOf("=") + 1);
+        } else {
+            return link;
+        }
+    }
 
     const SortIndicator = ({name, field}) => 
         <a href="#" onClick={() => updateSortField(field)}>{name} <span className="sortIndicator">{sortField.field === field && (sortField.order === "asc" ? "▼" : "▲")}</span></a>
@@ -119,8 +129,17 @@ export function StrategyList({ initialStrats, user }: StrategyListProps) {
         }[difficulty];
         return <span className={`badge badge-${labelClass}`}>{labelName}</span>;
     }
-        
-    const sortedStrats = orderBy(strats, [sortField.field, "area.name", "category.name", "room.name"], [sortField.order, "asc", "asc", "asc"]);
+
+    const searchedStrats = searchText && searchText.length > 1 
+    ? strats.filter(s => 
+        s.area.name.toLowerCase().includes(searchText) || 
+        s.room.name.toLowerCase().includes(searchText) || 
+        s.category.name.toLowerCase().includes(searchText) || 
+        s.name.toLowerCase().includes(searchText) ||            
+        s.description.toLowerCase().includes(searchText))
+    : strats;
+
+    const sortedStrats = orderBy(searchedStrats, [sortField.field, "area.name", "category.name", "room.name"], [sortField.order, "asc", "asc", "asc"]);
     const filteredStrats = filterField ? sortedStrats.filter(s => s[filterField.field] === filterField.value) : sortedStrats;
 
     return (
@@ -141,7 +160,7 @@ export function StrategyList({ initialStrats, user }: StrategyListProps) {
                     return (<tbody key={strat.id} style={{border: "none"}}>
                         <tr>
                             <td><FilterIndicator name={strat.area.name} field="areaId" id={strat.areaId} /></td>
-                            <td><FilterIndicator name={strat.room.name} field="roomId" id={strat.roomId} /></td>
+                            <td>{strat.room.link && <Link href={fixRoomLink(strat.room.link)}><a className="unfilteredField"><FontAwesomeIcon className="mr-1" icon={faGlobeEurope} /></a></Link>}<FilterIndicator name={strat.room.name} field="roomId" id={strat.roomId} /></td>
                             <td><FilterIndicator name={strat.category.name} field="categoryId" id={strat.categoryId} /></td>
                             <td className="stratList"><Link href={`/${strat.id}`}>{strat.name}</Link></td>
                             <td align="center"><DifficultyLabel difficulty={strat.difficulty} /></td>

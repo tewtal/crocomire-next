@@ -16,7 +16,7 @@ export const getServerSideProps = withSession(async function (ctx) {
 export default function Home({ strats, user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
         <Layout onSearch={null} user={user}>
-            {strats[0] ? <StrategyList initialStrats={strats} user={user}/> : <h5>No strategy with that id exists in the database</h5>}
+            {strats[0] ? <StrategyList initialStrats={strats} user={user} searchText=""/> : <h5>No strategy with that id exists in the database</h5>}
         </Layout>
     )
 }

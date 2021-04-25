@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { withSession, NextApiSessionRequest } from '../../../lib/session'
 import { LoggedInUser } from '../../../lib/useUser'
-import { validateForm } from './index'
+import { validateForm, validateAndCreateRoom } from './index'
 import prisma from '../../../lib/prisma';
 
 async function validateUserAndStrat(stratId: number, userId: number) {
@@ -54,6 +54,20 @@ export default withSession(async (req: NextApiSessionRequest, res: NextApiRespon
             const error = await validateUserAndStrat(stratId, sessionUser.id);
             if(error) {
                 return res.status(error.code).send(error);
+            }
+
+            let roomId = parseInt(form.roomId);
+            if(roomId === 0) {
+                const newRoom = await validateAndCreateRoom(form);
+                if(newRoom) {
+                    roomId = newRoom.id;
+                } else {
+                    return res.status(500).json({
+                        code: 500,
+                        status: "error",
+                        error: "Could not create new room"
+                    });
+                }
             }
 
             try {

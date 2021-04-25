@@ -29,6 +29,25 @@ export function validateForm(req: NextApiSessionRequest) {
     }
 }
 
+export async function validateAndCreateRoom(formData: any) {
+    if(formData.roomName && formData.roomLink) {
+        try {
+            const room = await prisma.room.create({
+                data: {
+                    name: formData.roomName,
+                    link: formData.roomLink,
+                    areaId: parseInt(formData.areaId)
+                }
+            });
+            return room;
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
 
 export default withSession(async (req: NextApiSessionRequest, res: NextApiResponse) => {
     if(req.method === 'POST') {
@@ -49,13 +68,27 @@ export default withSession(async (req: NextApiSessionRequest, res: NextApiRespon
                 return res.status(form.code).send(form);
             }
 
+            let roomId = parseInt(form.roomId);
+            if(roomId === 0) {
+                const newRoom = await validateAndCreateRoom(form);
+                if(newRoom) {
+                    roomId = newRoom.id;
+                } else {
+                    return res.status(500).json({
+                        code: 500,
+                        status: "error",
+                        error: "Could not create new room"
+                    });
+                }
+            }
+
             try {
                 await prisma.strat.create({
                     data: {
                         userId: user.id,
                         gameId: 1,
                         areaId: parseInt(form.areaId),
-                        roomId: parseInt(form.roomId),
+                        roomId: roomId,
                         categoryId: parseInt(form.categoryId),
                         name: form.name,
                         description: form.description,

@@ -129,24 +129,25 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
             );
         }
     }
+    
+    data.resource = data.resource.replace("http:", "https:");
     return (
-        <iframe 
-            src={data.resource}
-            width={width} 
-            height={height} 
-            frameBorder={0} 
-            scrolling="no"
-            allowFullScreen={true}>                    
-        </iframe>
+        <div>
+            <iframe
+                style={{display: "block"}}
+                src={data.resource}
+                width={width} 
+                height={height} 
+                frameBorder={0} 
+                scrolling="no"
+                allowFullScreen={true}>
+            </iframe>
+            <a href={data.resource}>{data.resource}</a>
+        </div>
     );
 }
 
 export function Embed({link, width, height}: EmbedProps) {
-    /* Don't server-side render the embed component since it relies on browser-only data to render properly */
-    if(typeof window !== "undefined") {
-        const data: EmbedData = parseEmbedLink(link);
-        return data && getEmbedComponent(data, width, height);
-    } else {
-        return null;
-    }
+    const data: EmbedData = parseEmbedLink(link);
+    return data && getEmbedComponent(data, width, height);
 }

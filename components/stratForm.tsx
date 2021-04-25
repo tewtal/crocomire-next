@@ -1,16 +1,18 @@
-import { Alert, Row, Col, Form, Button } from 'react-bootstrap'
+import { Card, Alert, Row, Col, Form, Button } from 'react-bootstrap'
 import { Strat, Area, Room, Category } from '@prisma/client'
 import { useState, FormEvent } from "react";
 import { useRouter } from 'next/router'
 
 interface StratFormData {
-    areaId: string;
-    roomId: string;
-    categoryId: string;
-    name: string;
-    description: string;
-    difficulty: string;
-    link: string;
+    areaId: string,
+    roomId: string,
+    categoryId: string,
+    name: string,
+    description: string,
+    difficulty: string,
+    link: string,
+    roomName: string,
+    roomLink: string
 }
 
 export default function StratForm({ strat, areas, rooms, categories }) {
@@ -25,7 +27,9 @@ export default function StratForm({ strat, areas, rooms, categories }) {
             name: strat.name,
             description: strat.description,
             difficulty: strat.difficulty,
-            link: strat.link
+            link: strat.link,
+            roomName: "",
+            roomLink: ""
         } : {
             areaId: "1",
             roomId: "1",
@@ -33,7 +37,9 @@ export default function StratForm({ strat, areas, rooms, categories }) {
             name: "",
             description: "",
             difficulty: "1",
-            link: ""
+            link: "",
+            roomName: "",
+            roomLink: ""
         }
     );
 
@@ -88,10 +94,31 @@ export default function StratForm({ strat, areas, rooms, categories }) {
                         <Form.Label column sm={3}>Room</Form.Label>
                         <Col sm={9}>
                             <Form.Control as="select" value={formState.roomId} onChange={handleChange}>
+                                <option value="0">Create new room...</option>
                                 {rooms.map((r: Room) => <option value={r.id} key={r.id}>{r.name}</option>)}
                             </Form.Control>
                         </Col>
                     </Form.Group>
+                    {formState.roomId === "0" && 
+                        <Card className="mb-4">
+                            <Card.Body>
+                                <Form.Group as={Row} controlId="roomName">
+                                    <Form.Label column sm={3}>Room name</Form.Label>
+                                    <Col sm={9}>
+                                        <Form.Control required type="input" value={formState.roomName} onChange={handleChange}/>
+                                        <Form.Control.Feedback type="invalid">You need to enter a name.</Form.Control.Feedback>
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row} controlId="roomLink">
+                                    <Form.Label column sm={3}>Room link</Form.Label>
+                                    <Col sm={9}>
+                                        <Form.Control required type="input" value={formState.roomLink} onChange={handleChange}/>
+                                        <Form.Control.Feedback type="invalid">You need to enter a name.</Form.Control.Feedback>
+                                    </Col>
+                                </Form.Group>
+                            </Card.Body>
+                        </Card>
+                    }
                     <Form.Group as={Row} controlId="categoryId">
                         <Form.Label column sm={3}>Category</Form.Label>
                         <Col sm={9}>

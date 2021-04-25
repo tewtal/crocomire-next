@@ -18,18 +18,9 @@ export default function Home({ strats, user }: InferGetServerSidePropsType<typeo
         setSearchText(e.target.value.toLowerCase());
     }
 
-    const filteredStrats = searchText 
-        ? strats.filter(s => 
-            s.area.name.toLowerCase().includes(searchText) || 
-            s.room.name.toLowerCase().includes(searchText) || 
-            s.category.name.toLowerCase().includes(searchText) || 
-            s.name.toLowerCase().includes(searchText) ||            
-            s.description.toLowerCase().includes(searchText))
-        : strats;
-
     return (
         <Layout onSearch={onSearch} user={user}>
-            <StrategyList initialStrats={filteredStrats} user={user} />
+            <StrategyList initialStrats={strats} user={user} searchText={searchText}/>
         </Layout>
     )
 }
