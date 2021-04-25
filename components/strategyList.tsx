@@ -151,8 +151,8 @@ export function StrategyList({ initialStrats, user, searchText }: StrategyListPr
                     <th><SortIndicator name="Room" field="room.name" /></th>
                     <th><SortIndicator name="Category" field="category.name" /></th>
                     <th><SortIndicator name="Name" field="name" /></th>
-                    <th><SortIndicator name="Difficulty" field="difficulty" /></th>
                     {single || <th style={{border: "none"}}>Info</th>}
+                    <th><SortIndicator name="Difficulty" field="difficulty" /></th>
                     {user && user.isLoggedIn && <th></th>}
                 </tr>
             </thead>
@@ -163,8 +163,8 @@ export function StrategyList({ initialStrats, user, searchText }: StrategyListPr
                             <td>{strat.room.link && <Link href={fixRoomLink(strat.room.link)}><a className="unfilteredField"><FontAwesomeIcon size="sm" className="mr-1" icon={faGlobeEurope} /></a></Link>}<FilterIndicator name={strat.room.name} field="roomId" id={strat.roomId} /></td>
                             <td><FilterIndicator name={strat.category.name} field="categoryId" id={strat.categoryId} /></td>
                             <td className="stratList"><Link href={`/${strat.id}`}>{strat.name}</Link></td>
-                            <td align="center"><DifficultyLabel difficulty={strat.difficulty} /></td>
                             {single || <td><Button variant="outline-dark" size="sm" onClick={() => toggleStrat(strat)}>{isStratVisible(strat) ? "Hide" : "Show"}</Button></td>}
+                            <td align="center"><DifficultyLabel difficulty={strat.difficulty} /></td>
                             {user && user.isLoggedIn && (user.flags.includes("a") || user.username === strat.user.username) && <td style={{border: "none", whiteSpace: "nowrap"}}><Link href={`/strats/edit/${strat.id}`} passHref><a><FontAwesomeIcon size="sm" color="green" icon={faEdit} className="mr-1"/></a></Link><a href="#" onClick={(e) => { showDeleteDialog(strat); e.preventDefault() }}><FontAwesomeIcon size="sm" color="red" icon={faBan} /></a></td>}
                         </tr>
                         {(isStratVisible(strat) || single) &&

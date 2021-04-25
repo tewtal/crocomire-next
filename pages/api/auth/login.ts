@@ -28,7 +28,13 @@ export default withSession(async (req: NextApiSessionRequest, res: NextApiRespon
   const { username, password } = await req.body
 
   try {
-    const user = await prisma.user.findFirst({ where: { username: username }});
+    const user = await prisma.user.findFirst({ where: { 
+      username: {
+          equals: username,
+          mode: "insensitive"
+      }
+    }});
+    
     if(user && (await checkPassword(password, user.password))) {
           const sessionUser = { ...user, password: "", isLoggedIn: true }
           req.session.set('user', sessionUser);

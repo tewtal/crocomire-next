@@ -84,6 +84,7 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
         if(data.type === "video") {
             return (
                 <iframe
+                    style={{display: "block", marginLeft: "auto"}}
                     src={`https://player.twitch.tv/?video=v${data.resource}&parent=${location.hostname}&autoplay=false`}
                     width={width}
                     height={height}
@@ -95,6 +96,7 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
         } else if(data.type === "clip") {
             return (
                 <iframe
+                    style={{display: "block", marginLeft: "auto"}}
                     src={`https://clips.twitch.tv/embed?clip=${data.resource}&parent=${location.hostname}&autoplay=false`}
                     width={width}
                     height={height}
@@ -106,6 +108,7 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
         if(data.type === "video") {            
             return (
                 <iframe 
+                    style={{display: "block", marginLeft: "auto"}}
                     src={`https://www.youtube-nocookie.com/embed/${data.resource}`}
                     width={width} 
                     height={height} 
@@ -118,6 +121,7 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
         } else if(data.type === "playlist") {
             return (
                 <iframe 
+                    style={{display: "block", marginLeft: "auto"}}
                     src={`https://www.youtube-nocookie.com/embed/videoseries?list=${data.resource}`}
                     width={width} 
                     height={height} 
@@ -134,7 +138,7 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
     return (
         <div>
             <iframe
-                style={{display: "block"}}
+                style={{display: "block", marginLeft: "auto"}}
                 src={data.resource}
                 width={width} 
                 height={height} 

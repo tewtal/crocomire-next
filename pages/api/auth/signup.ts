@@ -49,7 +49,13 @@ export default withSession(async (req: NextApiSessionRequest, res: NextApiRespon
             });
         }
 
-        const checkUser = await prisma.user.findFirst({ where: { username: form.username }});
+        const checkUser = await prisma.user.findFirst({ where: { 
+            username: {
+                equals: form.username,
+                mode: "insensitive"
+            }
+        }});
+
         if(checkUser) {
             return res.status(422).json({
                 status: "error",
