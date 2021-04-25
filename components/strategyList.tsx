@@ -160,12 +160,12 @@ export function StrategyList({ initialStrats, user, searchText }: StrategyListPr
                     return (<tbody key={strat.id} style={{border: "none"}}>
                         <tr>
                             <td><FilterIndicator name={strat.area.name} field="areaId" id={strat.areaId} /></td>
-                            <td>{strat.room.link && <Link href={fixRoomLink(strat.room.link)}><a className="unfilteredField"><FontAwesomeIcon className="mr-1" icon={faGlobeEurope} /></a></Link>}<FilterIndicator name={strat.room.name} field="roomId" id={strat.roomId} /></td>
+                            <td>{strat.room.link && <Link href={fixRoomLink(strat.room.link)}><a className="unfilteredField"><FontAwesomeIcon size="sm" className="mr-1" icon={faGlobeEurope} /></a></Link>}<FilterIndicator name={strat.room.name} field="roomId" id={strat.roomId} /></td>
                             <td><FilterIndicator name={strat.category.name} field="categoryId" id={strat.categoryId} /></td>
                             <td className="stratList"><Link href={`/${strat.id}`}>{strat.name}</Link></td>
                             <td align="center"><DifficultyLabel difficulty={strat.difficulty} /></td>
                             {single || <td><Button variant="outline-dark" size="sm" onClick={() => toggleStrat(strat)}>{isStratVisible(strat) ? "Hide" : "Show"}</Button></td>}
-                            {user && user.isLoggedIn && (user.flags.includes("a") || user.username === strat.user.username) && <td style={{border: "none", whiteSpace: "nowrap"}}><Link href={`/strats/edit/${strat.id}`} passHref><a><FontAwesomeIcon color="green" icon={faEdit} /></a></Link><a href="#" onClick={(e) => { showDeleteDialog(strat); e.preventDefault() }}><FontAwesomeIcon color="red" icon={faBan} /></a></td>}
+                            {user && user.isLoggedIn && (user.flags.includes("a") || user.username === strat.user.username) && <td style={{border: "none", whiteSpace: "nowrap"}}><Link href={`/strats/edit/${strat.id}`} passHref><a><FontAwesomeIcon size="sm" color="green" icon={faEdit} className="mr-1"/></a></Link><a href="#" onClick={(e) => { showDeleteDialog(strat); e.preventDefault() }}><FontAwesomeIcon size="sm" color="red" icon={faBan} /></a></td>}
                         </tr>
                         {(isStratVisible(strat) || single) &&
                             <tr key={`strat-${strat.id}`}>
