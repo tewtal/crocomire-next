@@ -1,0 +1,38 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+.stratList a {
+    color: black;        
+}
+
+.stratList a:hover {
+    text-decoration: none;
+    color: blue;
+}
+
+.stratList > tr > th {
+    border: none;
+}
+
+.stratDesc {
+    font-size: 0.9em;
+}
+
+.stratList .sortIndicator {
+    color: orange;
+}
+
+.filteredField {
+    color: red;
+}
+.filteredField:hover {
+    color: blue;
+    text-decoration: none;
+}
+
+.unfilteredField {
+    color: black;
+}
+.unfilteredField:hover {
+    color: blue;
+    text-decoration: none;
+}

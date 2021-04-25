@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id              Int             @default(autoincrement()) @id @map("user_id")
+    username        String      
+    password        String
+    email           String          @unique
+    flags           String
+    registeredOn    DateTime        @default(now()) @map("registered_on")
+    strats          Strat[]
+
+    @@map("users")
+}
+
+model Game {
+    id              Int             @default(autoincrement()) @id @map("game_id")
+    name            String
+    description     String?         @db.Text
+    shortName       String          @map("short_name")
+    link            String?
+    areas           Area[]
+    strats          Strat[]
+
+    @@map("games")
+}
+
+model Area {
+    id              Int             @default(autoincrement()) @id @map("area_id")
+    name            String
+    gameId          Int             @map("game_id")
+    game            Game            @relation(fields: [gameId], references: [id])
+    rooms           Room[]
+    strats          Strat[]
+
+    @@map("areas")
+}
+
+model Room {
+    id              Int             @default(autoincrement()) @id @map("room_id")
+    name            String
+    link            String?
+    areaId          Int             @map("area_id")
+    area            Area            @relation(fields: [areaId], references: [id])
+    strats          Strat[]
+
+    @@map("rooms")
+}
+
+model Category {
+    id              Int             @default(autoincrement()) @id @map("category_id")
+    name            String
+    glitched        Int
+    strats          Strat[]
+
+    @@map("categories")
+}
+
+model Strat {
+    id              Int             @default(autoincrement()) @id @map("strat_id")
+    name            String
+    description     String?         @db.Text
+    link            String?
+    difficulty      Int
+    createdOn       DateTime        @default(now()) @map("created_on")
+    areaId          Int             @map("area_id")
+    userId          Int             @map("user_id")
+    categoryId      Int             @map("category_id")
+    roomId          Int             @map("room_id")
+    gameId          Int             @map("game_id")
+    area            Area            @relation(fields: [areaId], references: [id])
+    user            User            @relation(fields: [userId], references: [id])
+    category        Category        @relation(fields: [categoryId], references: [id])
+    room            Room            @relation(fields: [roomId], references: [id])
+    game            Game            @relation(fields: [gameId], references: [id])
+
+    @@map("strats")
+}
