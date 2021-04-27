@@ -1,7 +1,7 @@
 import { Strat } from '@prisma/client'
 import { Modal, Table, Button } from 'react-bootstrap'
 import { Strategy } from './strategy'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { GetAllStrats } from '../models/strat'
 import { orderBy } from 'lodash'

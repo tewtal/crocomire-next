@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { ChangeEventHandler } from 'react'
-import { Container, Form, FormControl, Nav, Navbar } from 'react-bootstrap'
+import { Container, Form, FormControl, Navbar } from 'react-bootstrap'
 import { LoggedInUser } from '../lib/useUser'
 import { AuthBar } from './authbar'
 
@@ -22,7 +22,7 @@ export default function Layout({ children, onSearch, user }: LayoutProps) {
                 <Link href="/"><Navbar.Brand href="/">Super Metroid Strategy Database</Navbar.Brand></Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    {onSearch && <Form inline className="ml-sm-auto mr-sm-4 w-50">
+                    {onSearch && <Form inline className="ml-sm-auto mr-sm-4 w-50" onSubmit={e => e.preventDefault()}>
                         <FormControl type="text" placeholder="Search for a strategy..." size="sm" className="mr-sm-2 w-100" onChange={onSearch} />
                     </Form>}
                     <div className={onSearch ? "" : "ml-sm-auto"}>

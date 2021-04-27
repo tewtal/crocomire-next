@@ -1,5 +1,5 @@
 import { Card, Alert, Row, Col, Form, Button } from 'react-bootstrap'
-import { Strat, Area, Room, Category } from '@prisma/client'
+import { Area, Room, Category } from '@prisma/client'
 import { useState, FormEvent } from "react";
 import { useRouter } from 'next/router'
 

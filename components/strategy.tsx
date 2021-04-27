@@ -1,7 +1,7 @@
 import { Strat } from '@prisma/client'
 import { Row, Col } from 'react-bootstrap'
-import sanitizeHtml from 'sanitize-html'
 import { Embed } from './embed'
+import sanitizeHtml from 'sanitize-html'
 
 interface StrategyProps {
     strat: Strat

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
+import { User } from '@prisma/client'
 import Router from 'next/router'
 import useSWR from 'swr'
-import { User } from '@prisma/client'
 
 export type LoggedInUser = User & { isLoggedIn: boolean }
 

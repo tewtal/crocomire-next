@@ -24,7 +24,7 @@ async function validateUserAndStrat(stratId: number, userId: number) {
         };
     }
 
-    if(user.id !== strat.id && !user.flags.includes("m")) {
+    if(user.id !== strat.userId && !user.flags.includes("m")) {
         return {
             code: 403,
             status: "error",
