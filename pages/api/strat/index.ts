@@ -41,7 +41,6 @@ export async function validateAndCreateRoom(formData: any) {
             });
             return room;
         } catch (e) {
-            console.log(e);
             return null;
         }
     } else {
@@ -103,7 +102,6 @@ export default withSession(async (req: NextApiSessionRequest, res: NextApiRespon
                 });
 
             } catch (e) {
-                console.log(e);
                 return res.status(500).json({
                     code: 500,
                     status: "error",

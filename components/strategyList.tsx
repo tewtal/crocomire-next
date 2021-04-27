@@ -55,7 +55,8 @@ export function StrategyList({ initialStrats, user, searchText }: StrategyListPr
                 const result = await response.json();
                 
                 if(result.status !== "ok") {
-                    console.log(result);
+                    closeDeleteDialog();
+                    return;
                 }
 
                 if(single) {

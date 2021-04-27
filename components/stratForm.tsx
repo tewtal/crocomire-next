@@ -66,7 +66,6 @@ export default function StratForm({ strat, areas, rooms, categories }) {
             });
             
             const result = await response.json();
-            console.log(result);
             if(result.status === "ok") {
                 router.push("/");
             } else {

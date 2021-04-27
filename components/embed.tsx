@@ -106,7 +106,6 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
         }
     } else if(data.service === "youtube") {
         if(data.type === "video") {
-            console.log(data.resource);    
             return (
                 <iframe 
                     style={{display: "block", marginLeft: "auto"}}
