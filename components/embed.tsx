@@ -23,7 +23,7 @@ function parseEmbedLink(link: string): EmbedData {
         } else {
             let data: EmbedData = { resource: "", type: "video", service: "twitch" };            
             
-            const vRe = new RegExp("https?://www\.twitch\.tv/(.*)?/v/(.*)$");
+            const vRe = new RegExp("https?://www\.twitch\.tv/(.*)?/./(.*)$");
             const matchVre = link.match(vRe);            
             if(matchVre) {
                 data.resource = matchVre[2];
@@ -41,7 +41,7 @@ function parseEmbedLink(link: string): EmbedData {
         }
     } 
     else if(link.includes("youtube")) {
-        const videoRe = new RegExp("https?://www\.youtube\.com/watch.v=(.*)$");
+        const videoRe = new RegExp("https?://www\.youtube\.com/watch.v=([^&]*)?.*$");
         const matchVideo = link.match(videoRe);
         if(matchVideo) {
             return {
@@ -51,7 +51,7 @@ function parseEmbedLink(link: string): EmbedData {
             };
         }
 
-        const playlistRe = new RegExp("https?://www\.youtube\.com/playlist.list=(.*)$");
+        const playlistRe = new RegExp("https?://www\.youtube\.com/playlist.list=([^&]*)?.*$");
         const matchPlaylist = link.match(playlistRe);
         if(matchPlaylist) {
             return {
@@ -61,7 +61,7 @@ function parseEmbedLink(link: string): EmbedData {
             };
         }
     } else if(link.includes("youtu.be")) {
-        const videoRe = new RegExp("https?://youtu.be/(.*)$");
+        const videoRe = new RegExp("https?://youtu.be/([^&]*)?.*$");
         const matchVideo = link.match(videoRe);
         if(matchVideo) {
             return {
@@ -105,7 +105,8 @@ function getEmbedComponent(data: EmbedData, width: number, height: number) {
             );
         }
     } else if(data.service === "youtube") {
-        if(data.type === "video") {            
+        if(data.type === "video") {
+            console.log(data.resource);    
             return (
                 <iframe 
                     style={{display: "block", marginLeft: "auto"}}
